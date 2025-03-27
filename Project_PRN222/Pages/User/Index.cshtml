@@ -1,0 +1,38 @@
+﻿@page
+@model Project_PRN221.Pages.User.IndexModel
+@{
+}
+<!-- Image Upload -->
+<div class="mb-3">
+    <form action="" method="post">
+    <label for="image" class="form-label">Upload Image</label>
+    <input type="file" class="form-control" id="image" accept="image/*" onchange="previewImage(event)">
+    <input type="hidden" id="img" name="image" />
+        <div class="mb-3">
+            <label for="imagePreview" class="form-label">Image Preview</label>
+            <img class="img-fluid" id="imagePreview" src="~/img/team-1.jpg" alt="Image Preview" />
+        </div>
+        <input type="submit"/>
+    </form>
+</div>
+<script type="text/javascript">
+
+
+    function previewImage(event) {
+        const reader = new FileReader();
+        var image = document.getElementById('imagePreview');
+
+        image.src = URL.createObjectURL(event.target.files[0]);
+        image.style.display = 'block';
+        const files = event.target.files;
+        const file = files[0];
+        var get = reader.readAsDataURL(file);
+        reader.addEventListener('load', (event) => {
+            document.getElementById('img').value = event.target.result;
+            alert(document.getElementById('img').value + "");
+        });
+    }
+    // Send the file to the server
+
+
+</script>
