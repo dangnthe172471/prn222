@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -69,12 +69,12 @@ namespace Project_PRN221.Pages.Shop
                 {
      //               
 					//accountNo = "03201012538676",
-					accountNo = "08083835301203",
-					accountName = "NGUYEN THI THANH QUY",
+					accountNo = "0962900476",
+					accountName = "NGUYEN TIEN DANG",
 					acqId = 970422,
 					//acqId = 970426,
-					//amount = (int)price,
-                    //addInfo = user == null ?"": " "+ user.Username.ToUpper() +" - " + detail.PhoneNumber + " chuyen khoan EcoNest" ,
+					amount = (int)price,
+                    addInfo = user == null ? "" : " " + user.Username.ToUpper() + " - " + detail.PhoneNumber + " chuyen khoan EcoNest Đến anh Đăng đẹp trai",
                     format = "text",
                     template = "compact"
                 };
