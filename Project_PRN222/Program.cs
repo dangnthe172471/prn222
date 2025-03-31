@@ -17,10 +17,12 @@ namespace Project_PRN221
 			var builder = WebApplication.CreateBuilder(args);
 			builder.Services.AddScoped<AuthServicecs>();
 
-			// Add services to the container.
-			builder.Services.AddDbContext<GreenShopContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("GreenShop") ?? throw new InvalidOperationException("Connection string '_05_NguyenQuangVinh_DemoRazorContext' not found.")));
-			builder.Services.AddAuthentication(options =>
+            // Add services to the container.
+            builder.Services.AddDbContext<GreenShopContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnect"));
+            });
+            builder.Services.AddAuthentication(options =>
 			{
 				// Cấu hình mặc định để xác thực JWT
 				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
