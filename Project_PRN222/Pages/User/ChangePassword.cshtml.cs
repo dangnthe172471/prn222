@@ -1,22 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Project_PRN221.Models;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace Project_PRN221.Pages.User
+namespace Project_PRN222.Pages.User
 {
-    public class IndexModel : PageModel
+    public class ChangePasswordModel : PageModel
     {
+
+
         private readonly Project_PRN221.Models.GreenShopContext _context;
-        public IndexModel(Project_PRN221.Models.GreenShopContext context)
+        public ChangePasswordModel(Project_PRN221.Models.GreenShopContext context)
         {
             _context = context;
         }
-
         public Project_PRN221.Models.User User { get; set; }
 
-        public IActionResult OnGet()
+        public  IActionResult OnGet()
         {
             Guid? userId = getIdFromToken();
 
@@ -25,31 +26,50 @@ namespace Project_PRN221.Pages.User
             return Page();
         }
 
-        public IActionResult OnPost(string username, string email, string dob)
-        {
-            Guid? userId = getIdFromToken();
 
+        [BindProperty]
+        public string OldPassword { get; set; }
+
+        [BindProperty]
+        public string NewPassword { get; set; }
+
+        [BindProperty]
+        public string ConfirmPassword { get; set; }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (NewPassword != ConfirmPassword)
+            {
+                TempData["ErrorMessage"] = "Mật khẩu xác nhận không khớp.";
+                return Page();
+            }
+
+            var userId = getIdFromToken(); 
             if (userId == null)
             {
                 return RedirectToPage("/Login");
             }
 
-            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
-            if (user == null)
+            User = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (User == null)
             {
                 return RedirectToPage("/Login");
             }
 
-            user.Username = username;
-            user.Email = email;
-            user.Dob = dob;
+            if (!BCrypt.Net.BCrypt.Verify(OldPassword, User.Password)) 
+            {
+                TempData["ErrorMessage"] = "Mật khẩu cũ không đúng.";
+                return Page();
+            }
 
-            _context.SaveChanges();
 
+            User.Password = BCrypt.Net.BCrypt.HashPassword(NewPassword); 
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Mật khẩu đã được thay đổi thành công!";
             return RedirectToPage("/User/Index");
         }
-
-
 
         public Guid? getIdFromToken()
         {
@@ -76,6 +96,5 @@ namespace Project_PRN221.Pages.User
                 return null;
             }
         }
-
     }
 }

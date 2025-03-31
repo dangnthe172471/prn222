@@ -1,38 +1,68 @@
 ﻿@page
 @model Project_PRN221.Pages.User.IndexModel
 @{
+    Layout = "~/Pages/Shared/LoginLayout.cshtml";
 }
-<!-- Image Upload -->
-<div class="mb-3">
-    <form action="" method="post">
-    <label for="image" class="form-label">Upload Image</label>
-    <input type="file" class="form-control" id="image" accept="image/*" onchange="previewImage(event)">
-    <input type="hidden" id="img" name="image" />
-        <div class="mb-3">
-            <label for="imagePreview" class="form-label">Image Preview</label>
-            <img class="img-fluid" id="imagePreview" src="~/img/team-1.jpg" alt="Image Preview" />
-        </div>
-        <input type="submit"/>
-    </form>
-</div>
-<script type="text/javascript">
 
+<body>
+    <main class="main-content  mt-0">
+        <section>
+            <div class="page-header min-vh-75">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
+                            <div class="card card-plain mt-8">
+                                <div class="card-body">
+                                    @if (TempData["SuccessMessage"] != null)
+                                    {
+                                        <div class="alert alert-success">
+                                            @TempData["SuccessMessage"]
+                                        </div>
+                                    }
+                                    <form method="post">
+                                        <label>Tên Người Dùng</label>
+                                        <div class="mb-3">
+                                            <input type="text" id="username" name="username" class="form-control" value="@Model.User.Username" disabled>
+                                        </div>
 
-    function previewImage(event) {
-        const reader = new FileReader();
-        var image = document.getElementById('imagePreview');
+                                        <label>Email</label>
+                                        <div class="mb-3">
+                                            <input type="email" id="email" name="email" class="form-control" value="@Model.User.Email" disabled>
+                                        </div>
 
-        image.src = URL.createObjectURL(event.target.files[0]);
-        image.style.display = 'block';
-        const files = event.target.files;
-        const file = files[0];
-        var get = reader.readAsDataURL(file);
-        reader.addEventListener('load', (event) => {
-            document.getElementById('img').value = event.target.result;
-            alert(document.getElementById('img').value + "");
-        });
+                                        <label>Ngày Sinh</label>
+                                        <div class="mb-3">
+                                            <input type="date" id="dob" name="dob" class="form-control" value="@Model.User.Dob" disabled>
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="button" id="editButton" class="btn bg-gradient-success w-100 mt-4 mb-2" onclick="enableEdit()">Chỉnh Sửa Thông Tin</button>
+                                            <button type="submit" id="saveButton" class="btn bg-gradient-primary w-100 mt-4 mb-2" style="display: none;">Lưu</button>
+                                            <a href="/User/ChangePassword" class="btn bg-gradient-warning w-100 mt-2">Đổi Mật Khẩu</a>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
+                                <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image:url('/img/green-and-white-marbled-coloring.jpg')"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+
+<script>
+    function enableEdit() {
+        document.getElementById("username").removeAttribute("disabled");
+        document.getElementById("email").removeAttribute("disabled");
+        document.getElementById("dob").removeAttribute("disabled");
+
+        document.getElementById("editButton").style.display = "none";
+        document.getElementById("saveButton").style.display = "block";
     }
-    // Send the file to the server
-
-
 </script>
