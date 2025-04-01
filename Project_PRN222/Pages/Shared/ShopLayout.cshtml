@@ -277,7 +277,9 @@
 				else
 				{
 					<ul class="navbar-nav" style="margin-left: 50px;">
-						<img src="~/img/team-1.jpg" alt="Avatar" class="rounded-circle">
+						<img src="~/img/team-1.jpg" alt="Avatar" class="rounded-circle"
+							 style="cursor: pointer;" onclick="window.location.href='https://localhost:7147/User'">
+
 						<li class="nav-item @(Context.Request.Path == "/Login/Logout" ? "active" : "")">
 							<a href="~/Login/Logout" class="nav-link">Đăng Xuất</a>
 						</li>
